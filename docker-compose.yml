@@ -1,0 +1,21 @@
+version: '3.8'
+
+services:
+  localstack:
+    container_name: "go-lambda-email-sender"
+    image: localstack/localstack:latest
+    ports:
+      - "4566:4566"
+    environment:
+      - EDGE_PORT=4566
+      - AWS_DEFAULT_REGION=us-east-1
+      - AWS_ACCESS_KEY_ID=XXXXXXXXXXX1
+      - AWS_SECRET_ACCESS_KEY=XXXXXXXXXXX2
+      - DOCKER_HOST=unix:///var/run/docker.sock
+      - SERVICES=s3,secretsmanager,lambda,sqs,cloudwatch
+      - HOST_TMP_FOLDER=${TMPDIR}
+    volumes:
+      - "${TMPDIR:-/tmp/localstack}:/tmp/localstack"
+      - "/var/run/docker.sock:/var/run/docker.sock"
+      - "./main:/opt/code/localstack/main"
+      - "./docker/localstack/:/docker-entrypoint-initaws.d"
