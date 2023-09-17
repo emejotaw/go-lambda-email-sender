@@ -13,6 +13,7 @@ services:
       - AWS_SECRET_ACCESS_KEY=XXXXXXXXXXX2
       - DOCKER_HOST=unix:///var/run/docker.sock
       - SERVICES=s3,secretsmanager,lambda,sqs,cloudwatch
+      - EMAIL_SECRET_ID=aws-secret
       - HOST_TMP_FOLDER=${TMPDIR}
     volumes:
       - "${TMPDIR:-/tmp/localstack}:/tmp/localstack"
