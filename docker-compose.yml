@@ -19,4 +19,4 @@ services:
       - "${TMPDIR:-/tmp/localstack}:/tmp/localstack"
       - "/var/run/docker.sock:/var/run/docker.sock"
       - "./main:/opt/code/localstack/main"
-      - "./docker/localstack/:/docker-entrypoint-initaws.d"
+      - "./docker/localstack/initaws.sh:/opt/code/localstack/initaws.sh"

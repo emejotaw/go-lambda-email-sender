@@ -4,25 +4,22 @@ aws --endpoint http://localhost:4566 secretsmanager create-secret \
 --name aws-secret \
 --secret-string '{"email": "youremail@email.com", "password": "yourpassword", "host": "smtp.gmail.com", "port": "587"}' 
 
+aws --endpoint http://localhost:4566 sqs create-queue --queue-name aws-queue
+
 aws --endpoint http://localhost:4566 iam create-role \
 --role-name lambda-role \
---assume-role-policy-document "{"Version": "2012-10-17", "Statement": [
-    {
-        "Effect": "Allow",
-        "Principal": {
-            "Service": "lambda.amazonaws.com", 
-            "Action": "sts:AssumeRole"
-        }    
-    }
-]}"
+--assume-role-policy-document '{"Version": "2012-10-17", "Statement": [{"Effect": "Allow","Principal": {"Service": "lambda.amazonaws.com", "Action": "sts:AssumeRole"}}]}'
 
-aws --endpoint http://localhost:4566 sqs create-queue --queue-name aws-queue
+aws --endpoint http://localhost:4566 iam create-policy --policy-name aws-policy --policy-document '{"Version": "2012-10-17","Statement": [{"Effect": "Allow","Action": ["sqs:SendMessage","sqs:ReceiveMessage","sqs:DeleteMessage","sqs:GetQueueAttributes","sqs:ChangeMessageVisibility"],"Resource": "arn:aws:sqs:us-east-1:000000000000:aws-queue"}]}'
+
+aws --endpoint http://localhost:4566 iam attach-role-policy --policy-arn arn:aws:iam::000000000000:policy/aws-policy --role-name lambda-role
 
 aws --endpoint http://localhost:4566 lambda create-function \
 --function-name aws-lambda \
 --runtime go1.x \
 --zip-file fileb://main.zip \
 --timeout 10000 \
+--memory-size 1024 \
 --environment Variables={"EMAIL_SECRET_ID=aws-secret,AWS_REGION=us-east-1,AWS_ENDPOINT=http://host.docker.internal:4566"} \
 --handler main \
 --role arn:aws:iam::000000000000:role/lambda-role
