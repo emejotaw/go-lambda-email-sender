@@ -10,14 +10,14 @@ import (
 	"github.com/aws/aws-sdk-go-v2/service/secretsmanager"
 )
 
-type secretsManagerClient struct {
+type SecretsManagerClient struct {
 	client *secretsmanager.Client
 }
 
-func NewSecretsManagerClient() (*secretsManagerClient, error) {
+func NewSecretsManagerClient() (*SecretsManagerClient, error) {
 
 	client, err := newSecretsManager()
-	return &secretsManagerClient{client: client}, err
+	return &SecretsManagerClient{client: client}, err
 }
 
 func newSecretsManager() (*secretsmanager.Client, error) {
@@ -50,7 +50,7 @@ func withEndpointResolver(service, region string, options ...interface{}) (aws.E
 	return aws.Endpoint{}, &aws.EndpointNotFoundError{}
 }
 
-func (smc *secretsManagerClient) Get(secretID string) (string, error) {
+func (smc *SecretsManagerClient) Get(secretID string) (string, error) {
 
 	ctx := context.TODO()
 	client := smc.client

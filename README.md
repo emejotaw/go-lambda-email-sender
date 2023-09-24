@@ -17,7 +17,7 @@ docker exec -it go-lambda-email-sender bash
 ```
 
 ```sh
-aws --endpoint http://localhost:4566 sqs send-message --queue aws-queue --message-body '{"email": "jhondoe@gmail.com", "provider": "test", "type", "test"}'
+aws --endpoint http://localhost:4566 sqs send-message --queue aws-queue --message-body '{"email": "jhondoe@gmail.com", "provider": "test", "type": "test"}'
 ```
 
 ### Check if message has stopped in queue ###
@@ -38,10 +38,10 @@ aws --endpoint http://localhost:4566 logs describe-log-groups
 
 ### Get log stream name ###
 ```sh
-aws --endpoint http://localhost:4566 logs describe-log-streams --log-group /aws/lambda/aws-lambda
+aws --endpoint http://localhost:4566 logs describe-log-streams --log-group-identifier /aws/lambda/aws-lambda
 ```
 
 ### Get log events ###
 ```sh
-aws --endpoint http://localhost:4566 logs get-log-events --log-group-name /aws/lambda/aws-lambda --log-stream-name ${log_stream_name}
+aws --endpoint http://localhost:4566 logs get-log-events --log-group-name /aws/lambda/aws-lambda --log-stream-name 2023/09/24/[$LATEST]6f056b8ad0e8b1094a6be744b351fbe6
 ```

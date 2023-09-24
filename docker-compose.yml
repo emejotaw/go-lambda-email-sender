@@ -13,9 +13,10 @@ services:
       - AWS_SECRET_ACCESS_KEY=XXXXXXXXXXX2
       - DOCKER_HOST=unix:///var/run/docker.sock
       - SERVICES=s3,secretsmanager,lambda,sqs,cloudwatch
+      - EMAIL_SECRET_ID=aws-secret
       - HOST_TMP_FOLDER=${TMPDIR}
     volumes:
       - "${TMPDIR:-/tmp/localstack}:/tmp/localstack"
       - "/var/run/docker.sock:/var/run/docker.sock"
       - "./main:/opt/code/localstack/main"
-      - "./docker/localstack/:/docker-entrypoint-initaws.d"
+      - "./docker/localstack/initaws.sh:/opt/code/localstack/initaws.sh"
